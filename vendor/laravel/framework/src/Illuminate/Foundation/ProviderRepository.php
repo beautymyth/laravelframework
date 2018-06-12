@@ -10,21 +10,21 @@ class ProviderRepository {
 
     /**
      * The application implementation.
-     *
+     * <br>当前应用实例
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
     /**
      * The filesystem instance.
-     *
+     * <br>文件操作实例
      * @var \Illuminate\Filesystem\Filesystem
      */
     protected $files;
 
     /**
      * The path to the manifest file.
-     *
+     * <br>服务清单缓存文件
      * @var string
      */
     protected $manifestPath;
@@ -50,12 +50,15 @@ class ProviderRepository {
      * @return void
      */
     public function load(array $providers) {
-        //加载服务提供者清单
+        //加载缓存的服务提供者
+        //bootstrap/cache/service
         $manifest = $this->loadManifest();
 
         // First we will load the service manifest, which contains information on all
         // service providers registered with the application and which services it
         // provides. This is used to know which services are "deferred" loaders.
+        //第一步，加载服务清单，其中包含应用程序注册的所有服务提供者的信息以及它提供的服务。
+        //同时可以知道哪些服务提供者是延迟加载的
         if ($this->shouldRecompile($manifest, $providers)) {
             $manifest = $this->compileManifest($providers);
         }
@@ -79,7 +82,7 @@ class ProviderRepository {
 
     /**
      * Load the service provider manifest JSON file.
-     * <br>加载服务提供者清单JSON文件
+     * <br>加载缓存的服务提供者(bootstrap/cache/service)
      * @return array|null
      */
     public function loadManifest() {
@@ -127,7 +130,7 @@ class ProviderRepository {
 
     /**
      * Compile the application service manifest file.
-     *
+     * <br>便已应用服务清单
      * @param  array  $providers
      * @return array
      */
@@ -135,36 +138,43 @@ class ProviderRepository {
         // The service manifest should contain a list of all of the providers for
         // the application so we can compare it on each request to the service
         // and determine if the manifest should be recompiled or is current.
+        //服务清单应该包含应用程序的所有提供程序的列表，
+        //以便我们可以在每个请求上对它与服务进行比较，
+        //并确定应该重新编译该清单还是当前的清单
         $manifest = $this->freshManifest($providers);
 
+        //循环处理每个服务提供者
         foreach ($providers as $provider) {
+            //获取服务提供者实例
             $instance = $this->createProvider($provider);
 
             // When recompiling the service manifest, we will spin through each of the
             // providers and check if it's a deferred provider or not. If so we'll
             // add it's provided services to the manifest and note the provider.
             if ($instance->isDeferred()) {
+                //延迟加载
+                
                 foreach ($instance->provides() as $service) {
+                    //循环服务提供者提供的服务
                     $manifest['deferred'][$service] = $provider;
                 }
 
                 $manifest['when'][$provider] = $instance->when();
-            }
-
-            // If the service providers are not deferred, we will simply add it to an
-            // array of eagerly loaded providers that will get registered on every
-            // request to this application instead of "lazy" loading every time.
-            else {
+            } else {
+                // If the service providers are not deferred, we will simply add it to an
+                // array of eagerly loaded providers that will get registered on every
+                // request to this application instead of "lazy" loading every time.
+                //非延迟加载
                 $manifest['eager'][] = $provider;
             }
         }
-
+        //写入缓存文件
         return $this->writeManifest($manifest);
     }
 
     /**
      * Create a fresh service manifest data structure.
-     *
+     * <br>创建一个新的服务清单数据结构
      * @param  array  $providers
      * @return array
      */
@@ -174,7 +184,7 @@ class ProviderRepository {
 
     /**
      * Write the service manifest file to disk.
-     *
+     * <br>将服务清单，写入缓存文件
      * @param  array  $manifest
      * @return array
      *
@@ -194,7 +204,7 @@ class ProviderRepository {
 
     /**
      * Create a new provider instance.
-     *
+     * <br>获取服务提供者实例
      * @param  string  $provider
      * @return \Illuminate\Support\ServiceProvider
      */

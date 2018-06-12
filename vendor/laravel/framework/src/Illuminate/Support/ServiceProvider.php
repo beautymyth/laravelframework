@@ -270,7 +270,7 @@ abstract class ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
+     * <br>获取提供者提供的服务
      * @return array
      */
     public function provides()
@@ -280,7 +280,7 @@ abstract class ServiceProvider
 
     /**
      * Get the events that trigger this service provider to register.
-     *
+     * <br>获取触发该服务提供者注册的事件
      * @return array
      */
     public function when()
@@ -290,7 +290,7 @@ abstract class ServiceProvider
 
     /**
      * Determine if the provider is deferred.
-     *
+     * <br>服务提供者是否延迟加载
      * @return bool
      */
     public function isDeferred()
