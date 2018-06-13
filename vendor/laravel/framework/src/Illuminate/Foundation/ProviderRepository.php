@@ -24,7 +24,7 @@ class ProviderRepository {
 
     /**
      * The path to the manifest file.
-     * <br>服务清单缓存文件
+     * <br>服务清单缓存文件路径
      * @var string
      */
     protected $manifestPath;
@@ -66,6 +66,8 @@ class ProviderRepository {
         // Next, we will register events to load the providers for each of the events
         // that it has requested. This allows the service provider to defer itself
         // while still getting automatically loaded when a certain event occurs.
+        // 第二步，为延迟的服务提供者注册自动加载的事件
+        // 当某些事件触发时，延迟服务提供者会自动加载
         foreach ($manifest['when'] as $provider => $events) {
             $this->registerLoadEvents($provider, $events);
         }
@@ -73,10 +75,11 @@ class ProviderRepository {
         // We will go ahead and register all of the eagerly loaded providers with the
         // application so their services can be registered with the application as
         // a provided service. Then we will set the deferred service list on it.
+        //第三步，向应用中注册需要即时加载的服务提供者
         foreach ($manifest['eager'] as $provider) {
             $this->app->register($provider);
         }
-
+        //记录需要延迟加载的服务提供者
         $this->app->addDeferredServices($manifest['deferred']);
     }
 
@@ -113,7 +116,7 @@ class ProviderRepository {
 
     /**
      * Register the load events for the given provider.
-     *
+     * <br>为服务提供者注册需要加载的事件
      * @param  string  $provider
      * @param  array  $events
      * @return void
@@ -130,7 +133,7 @@ class ProviderRepository {
 
     /**
      * Compile the application service manifest file.
-     * <br>便已应用服务清单
+     * <br>编译应用服务清单
      * @param  array  $providers
      * @return array
      */
