@@ -706,12 +706,12 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Resolve the given type from the container.
      * 从服务容器中解析服务
      * (Overriding Container::make)
-     *
      * @param  string  $abstract
      * @param  array  $parameters
      * @return mixed
      */
     public function make($abstract, array $parameters = []) {
+        //获取最终需要解析的类名
         $abstract = $this->getAlias($abstract);
 
         if (isset($this->deferredServices[$abstract]) && !isset($this->instances[$abstract])) {

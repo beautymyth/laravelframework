@@ -8,21 +8,21 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 {
     /**
      * The underlying container instance.
-     *
+     * <br>服务容器
      * @var \Illuminate\Container\Container
      */
     protected $container;
 
     /**
      * The concrete instance.
-     *
+     * <br>具体类型
      * @var string
      */
     protected $concrete;
 
     /**
      * The abstract target.
-     *
+     * <br>抽象目标
      * @var string
      */
     protected $needs;
@@ -42,7 +42,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 
     /**
      * Define the abstract target that depends on the context.
-     *
+     * <br>定义依赖于上下文的抽象目标
      * @param  string  $abstract
      * @return $this
      */
@@ -55,12 +55,13 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
 
     /**
      * Define the implementation for the contextual binding.
-     *
+     * <br>定义上下文绑定的实现
      * @param  \Closure|string  $implementation
      * @return void
      */
     public function give($implementation)
     {
+        //将上下文绑定添加到容器中
         $this->container->addContextualBinding(
             $this->concrete, $this->needs, $implementation
         );
