@@ -26,21 +26,21 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The Laravel framework version.
-     *
+     * <br>laravel框架版本
      * @var string
      */
     const VERSION = '5.6.20';
 
     /**
      * The base path for the Laravel installation.
-     *
+     * <br>项目文件夹路径
      * @var string
      */
     protected $basePath;
 
     /**
      * Indicates if the application has been bootstrapped before.
-     *
+     * <br>应用是否已启动
      * @var bool
      */
     protected $hasBeenBootstrapped = false;
@@ -54,21 +54,24 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The array of booting callbacks.
-     *
+     * <br>启动的回调
+     * <br>[$callback]
      * @var array
      */
     protected $bootingCallbacks = [];
 
     /**
      * The array of booted callbacks.
-     *
+     * <br>启动后的回调
+     * <br>[$callback]
      * @var array
      */
     protected $bootedCallbacks = [];
 
     /**
      * The array of terminating callbacks.
-     *
+     * <br>应用中止时的回调
+     * <br>[$callback]
      * @var array
      */
     protected $terminatingCallbacks = [];
@@ -76,6 +79,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * All of the registered service providers.
      * <br>所有已注册的服务提供者
+     * <br>[$provider]
      * @var array
      */
     protected $serviceProviders = [];
@@ -98,7 +102,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The custom database path defined by the developer.
-     *
      * @var string
      */
     protected $databasePath;
@@ -126,32 +129,36 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * The application namespace.
-     *
+     * <br>应用的命名空间
      * @var string
      */
     protected $namespace;
 
     /**
      * Create a new Illuminate application instance.
-     *
+     * <br>创建应用实例
      * @param  string|null  $basePath
      * @return void
      */
     public function __construct($basePath = null) {
         if ($basePath) {
+            //设置应用路径
             $this->setBasePath($basePath);
         }
-
+        
+        //注册基本的绑定
         $this->registerBaseBindings();
-
+        
+        //注册基本的服务提供者
         $this->registerBaseServiceProviders();
-
+        
+        //注册核心的容器服务别名
         $this->registerCoreContainerAliases();
     }
 
     /**
      * Get the version number of the application.
-     *
+     * <br>获取应用的版本
      * @return string
      */
     public function version() {
@@ -160,7 +167,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register the basic bindings into the container.
-     *
+     * <br>注册基本的绑定
      * @return void
      */
     protected function registerBaseBindings() {
@@ -177,7 +184,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register all of the base service providers.
-     * <br>注册所有基本的服务提供者
+     * <br>注册基本的服务提供者
      * @return void
      */
     protected function registerBaseServiceProviders() {
@@ -208,7 +215,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register a callback to run after loading the environment.
-     *
+     * <br>注册在环境加载好后的回调
      * @param  \Closure  $callback
      * @return void
      */
@@ -220,7 +227,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register a callback to run before a bootstrapper.
-     *
+     * <br>注册在应用启动前的回调
      * @param  string  $bootstrapper
      * @param  \Closure  $callback
      * @return void
@@ -231,7 +238,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register a callback to run after a bootstrapper.
-     *
+     * <br>注册在应用启动后的回调
      * @param  string  $bootstrapper
      * @param  \Closure  $callback
      * @return void
@@ -251,7 +258,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Set the base path for the application.
-     *
+     * <br>设置应用路径
      * @param  string  $basePath
      * @return $this
      */
@@ -265,7 +272,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Bind all of the application paths in the container.
-     *
+     * <br>将应用相关的路径绑定到容器中
      * @return void
      */
     protected function bindPathsInContainer() {
@@ -282,7 +289,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the application "app" directory.
-     *
+     * <br>获取应用的'app'目录路径
      * @param  string  $path Optionally, a path to append to the app path
      * @return string
      */
@@ -292,7 +299,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the base path of the Laravel installation.
-     *
+     * <br>获取应用的基本路径
      * @param  string  $path Optionally, a path to append to the base path
      * @return string
      */
@@ -302,7 +309,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the bootstrap directory.
-     *
+     * <br>获取应用的'bootstrap'目录路径
      * @param  string  $path Optionally, a path to append to the bootstrap path
      * @return string
      */
@@ -312,7 +319,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the application configuration files.
-     *
+     * <br>获取应用的'config'目录路径
      * @param  string  $path Optionally, a path to append to the config path
      * @return string
      */
@@ -322,7 +329,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the database directory.
-     *
+     * <br>获取应用的'database'目录路径
      * @param  string  $path Optionally, a path to append to the database path
      * @return string
      */
@@ -387,7 +394,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the path to the resources directory.
-     *
+     * <br>获取应用的'resources'目录路径
      * @param  string  $path
      * @return string
      */
@@ -650,7 +657,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Load the provider for a deferred service.
-     * 为延迟服务加载服务提供者
+     * 加载延迟服务提供者
      * @param  string  $service
      * @return void
      */
@@ -706,18 +713,20 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Resolve the given type from the container.
      * 从服务容器中解析服务
      * (Overriding Container::make)
+     *
      * @param  string  $abstract
      * @param  array  $parameters
      * @return mixed
      */
     public function make($abstract, array $parameters = []) {
-        //获取最终需要解析的类名
+        //获取别名对应的可用类名
         $abstract = $this->getAlias($abstract);
 
         if (isset($this->deferredServices[$abstract]) && !isset($this->instances[$abstract])) {
             //服务为延迟加载，且没有被加载过
             $this->loadDeferredProvider($abstract);
         }
+        
         //调用父类Container->make，从服务容器中解析服务
         return parent::make($abstract, $parameters);
     }
@@ -782,7 +791,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register a new boot listener.
-     * <br>增加一个启动监听
+     * <br>增加一个启动回调
      * @param  mixed  $callback
      * @return void
      */
@@ -792,7 +801,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register a new "booted" listener.
-     *
+     * <br>增加一个启动后回调
      * @param  mixed  $callback
      * @return void
      */
@@ -916,7 +925,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register a terminating callback with the application.
-     *
+     * <br>注册应用的中止回调
      * @param  \Closure  $callback
      * @return $this
      */
@@ -928,7 +937,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Terminate the application.
-     *
+     * <br>中止应用
      * @return void
      */
     public function terminate() {
@@ -987,7 +996,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Configure the real-time facade namespace.
-     *
+     * <br>配置实时的facades
      * @param  string  $namespace
      * @return void
      */
@@ -1030,7 +1039,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register the core class aliases in the container.
-     *
+     * <br>注册核心的容器服务别名
      * @return void
      */
     public function registerCoreContainerAliases() {
@@ -1099,7 +1108,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Get the application namespace.
-     *
+     * <br>获取应用的命名空间
      * @return string
      *
      * @throws \RuntimeException
