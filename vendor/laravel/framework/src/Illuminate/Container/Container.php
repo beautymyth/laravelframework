@@ -54,7 +54,7 @@ class Container implements ArrayAccess, ContainerContract {
     /**
      * The registered type aliases.
      * <br>类别名
-     * <br>[$alias=>$abstract]
+     * <br>[$alias(实际类名)=>$abstract(别名)]
      * <br>$app->registerCoreContainerAliases
      * @var array
      */
@@ -395,7 +395,7 @@ class Container implements ArrayAccess, ContainerContract {
      * @return mixed
      */
     public function instance($abstract, $instance) {
-        //删除抽象类键值的别名
+        //删除抽象类关联的实际类名
         $this->removeAbstractAlias($abstract);
 
         //是否已绑定
@@ -480,8 +480,8 @@ class Container implements ArrayAccess, ContainerContract {
     /**
      * Alias a type to a different name.
      * <br>将类型别名设为不同的名称
-     * @param  string  $abstract
-     * @param  string  $alias
+     * @param  string  $abstract 如view
+     * @param  string  $alias 如\Illuminate\View\Factory::class
      * @return void
      */
     public function alias($abstract, $alias) {
