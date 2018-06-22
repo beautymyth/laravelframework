@@ -152,7 +152,7 @@ class Container implements ArrayAccess, ContainerContract {
     /**
      * Define a contextual binding.
      * <br>创建上下文绑定
-     * @param  string  $concrete
+     * @param  string  $concrete 实际类名
      * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete) {
@@ -221,9 +221,9 @@ class Container implements ArrayAccess, ContainerContract {
     /**
      * Register a binding with the container.
      * <br>绑定服务到容器
-     * @param  string  $abstract 类别名，具体类名，接口类名
-     * @param  \Closure|string|null  $concrete 具体类名，类的构建闭包
-     * @param  bool  $shared true，false
+     * @param  string  $abstract 类别名，实际类名，接口类名
+     * @param  \Closure|string|null  $concrete 类的构建闭包，实际类名，null=>$concrete=$abstract
+     * @param  bool  $shared 是否为共享服务
      * @return void
      */
     public function bind($abstract, $concrete = null, $shared = false) {
@@ -351,8 +351,8 @@ class Container implements ArrayAccess, ContainerContract {
     /**
      * Register a shared binding in the container.
      * <br>绑定单例服务到容器
-     * @param  string  $abstract
-     * @param  \Closure|string|null  $concrete
+     * @param  string  $abstract 类别名，实际类名，接口类名
+     * @param  \Closure|string|null  $concrete 类的构建闭包，实际类名，null=>$concrete=$abstract
      * @return void
      */
     public function singleton($abstract, $concrete = null) {
@@ -369,7 +369,7 @@ class Container implements ArrayAccess, ContainerContract {
      * @throws \InvalidArgumentException
      */
     public function extend($abstract, Closure $closure) {
-        //获取实际类名
+        //获取抽象类型的别名
         $abstract = $this->getAlias($abstract);
 
         if (isset($this->instances[$abstract])) {
@@ -378,7 +378,7 @@ class Container implements ArrayAccess, ContainerContract {
             //触发'rebound'回调
             $this->rebound($abstract);
         } else {
-            //记录服务扩展信息
+            //记录服务扩展方法
             $this->extenders[$abstract][] = $closure;
             //如果解析过，触发'rebound'回调
             if ($this->resolved($abstract)) {
@@ -389,9 +389,9 @@ class Container implements ArrayAccess, ContainerContract {
 
     /**
      * Register an existing instance as shared in the container.
-     * <br>绑定抽象类的实例为共享实例
-     * @param  string  $abstract
-     * @param  mixed   $instance
+     * <br>绑定抽象类型的实例为共享实例
+     * @param  string  $abstract 类别名，实际类名，接口类名
+     * @param  mixed   $instance 实例
      * @return mixed
      */
     public function instance($abstract, $instance) {
@@ -521,7 +521,7 @@ class Container implements ArrayAccess, ContainerContract {
 
     /**
      * Fire the "rebound" callbacks for the given abstract type.
-     * <br>触发抽象类的'rebound'回调
+     * <br>触发抽象类型的'rebound'回调
      * @param  string  $abstract
      * @return void
      */
@@ -1107,7 +1107,7 @@ class Container implements ArrayAccess, ContainerContract {
 
     /**
      * Get the alias for an abstract if available.
-     * <br>获取别名对应的可用类名
+     * <br>获取抽象类型的别名
      * @param  string  $abstract
      * @return string
      *
