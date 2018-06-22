@@ -4,8 +4,8 @@ namespace Illuminate\Container;
 
 use Illuminate\Contracts\Container\ContextualBindingBuilder as ContextualBindingBuilderContract;
 
-class ContextualBindingBuilder implements ContextualBindingBuilderContract
-{
+class ContextualBindingBuilder implements ContextualBindingBuilderContract {
+
     /**
      * The underlying container instance.
      * <br>服务容器
@@ -34,36 +34,33 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
      * @param  string  $concrete
      * @return void
      */
-    public function __construct(Container $container, $concrete)
-    {
+    public function __construct(Container $container, $concrete) {
         $this->concrete = $concrete;
         $this->container = $container;
     }
 
     /**
      * Define the abstract target that depends on the context.
-     * <br>定义依赖于上下文的抽象目标
+     * <br>上下文依赖的抽象类型
      * @param  string  $abstract
      * @return $this
      */
-    public function needs($abstract)
-    {
+    public function needs($abstract) {
         $this->needs = $abstract;
-
         return $this;
     }
 
     /**
      * Define the implementation for the contextual binding.
-     * <br>定义上下文绑定的实现
+     * <br>抽象类型的实现
      * @param  \Closure|string  $implementation
      * @return void
      */
-    public function give($implementation)
-    {
+    public function give($implementation) {
         //将上下文绑定添加到容器中
         $this->container->addContextualBinding(
-            $this->concrete, $this->needs, $implementation
+                $this->concrete, $this->needs, $implementation
         );
     }
+
 }
