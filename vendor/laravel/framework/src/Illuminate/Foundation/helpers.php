@@ -105,17 +105,18 @@ if (! function_exists('action')) {
 if (! function_exists('app')) {
     /**
      * Get the available container instance.
-     *
-     * @param  string  $abstract
-     * @param  array   $parameters
+     * 从容器中解析实例
+     * @param  string  $abstract 类别名，实际类名，接口类名
+     * @param  array   $parameters 类依赖的参数
      * @return mixed|\Illuminate\Foundation\Application
      */
     function app($abstract = null, array $parameters = [])
     {
         if (is_null($abstract)) {
+            //如果没有抽象类型，返回容器实例
             return Container::getInstance();
         }
-
+        //解析抽象类型
         return Container::getInstance()->make($abstract, $parameters);
     }
 }
@@ -752,8 +753,8 @@ if (! function_exists('rescue')) {
 if (! function_exists('resolve')) {
     /**
      * Resolve a service from the container.
-     *
-     * @param  string  $name
+     * 从容器中解析类
+     * @param  string  $name 抽象类型
      * @return mixed
      */
     function resolve($name)

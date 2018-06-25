@@ -12,8 +12,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
 
-class Kernel implements KernelContract
-{
+class Kernel implements KernelContract {
+
     /**
      * The application implementation.
      *
@@ -86,8 +86,7 @@ class Kernel implements KernelContract
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function __construct(Application $app, Router $router)
-    {
+    public function __construct(Application $app, Router $router) {
         $this->app = $app;
         $this->router = $router;
 
@@ -104,15 +103,14 @@ class Kernel implements KernelContract
 
     /**
      * Handle an incoming HTTP request.
-     *
+     * <br>处理http请求
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function handle($request)
-    {
+    public function handle($request) {
         try {
             $request->enableHttpMethodParameterOverride();
-
+            //通过中间件/路由器发送请求
             $response = $this->sendRequestThroughRouter($request);
         } catch (Exception $e) {
             $this->reportException($e);
@@ -125,7 +123,7 @@ class Kernel implements KernelContract
         }
 
         $this->app['events']->dispatch(
-            new Events\RequestHandled($request, $response)
+                new Events\RequestHandled($request, $response)
         );
 
         return $response;
@@ -133,32 +131,33 @@ class Kernel implements KernelContract
 
     /**
      * Send the given request through the middleware / router.
-     *
+     * <br>通过中间件/路由器发送请求
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    protected function sendRequestThroughRouter($request)
-    {
+    protected function sendRequestThroughRouter($request) {
         $this->app->instance('request', $request);
 
         Facade::clearResolvedInstance('request');
-
+        
+        //为Http请求启动应用
         $this->bootstrap();
 
         return (new Pipeline($this->app))
-                    ->send($request)
-                    ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
-                    ->then($this->dispatchToRouter());
+                        ->send($request)
+                        ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
+                        ->then($this->dispatchToRouter());
     }
 
     /**
      * Bootstrap the application for HTTP requests.
-     *
+     * <br>为Http请求启动应用
      * @return void
      */
-    public function bootstrap()
-    {
-        if (! $this->app->hasBeenBootstrapped()) {
+    public function bootstrap() {
+        //应用是否已经启动
+        if (!$this->app->hasBeenBootstrapped()) {
+            //运行给定的启动类
             $this->app->bootstrapWith($this->bootstrappers());
         }
     }
@@ -168,8 +167,7 @@ class Kernel implements KernelContract
      *
      * @return \Closure
      */
-    protected function dispatchToRouter()
-    {
+    protected function dispatchToRouter() {
         return function ($request) {
             $this->app->instance('request', $request);
 
@@ -184,8 +182,7 @@ class Kernel implements KernelContract
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
-    public function terminate($request, $response)
-    {
+    public function terminate($request, $response) {
         $this->terminateMiddleware($request, $response);
 
         $this->app->terminate();
@@ -198,15 +195,13 @@ class Kernel implements KernelContract
      * @param  \Illuminate\Http\Response  $response
      * @return void
      */
-    protected function terminateMiddleware($request, $response)
-    {
+    protected function terminateMiddleware($request, $response) {
         $middlewares = $this->app->shouldSkipMiddleware() ? [] : array_merge(
-            $this->gatherRouteMiddleware($request),
-            $this->middleware
+                        $this->gatherRouteMiddleware($request), $this->middleware
         );
 
         foreach ($middlewares as $middleware) {
-            if (! is_string($middleware)) {
+            if (!is_string($middleware)) {
                 continue;
             }
 
@@ -226,8 +221,7 @@ class Kernel implements KernelContract
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    protected function gatherRouteMiddleware($request)
-    {
+    protected function gatherRouteMiddleware($request) {
         if ($route = $request->route()) {
             return $this->router->gatherRouteMiddleware($route);
         }
@@ -241,8 +235,7 @@ class Kernel implements KernelContract
      * @param  string  $middleware
      * @return array
      */
-    protected function parseMiddleware($middleware)
-    {
+    protected function parseMiddleware($middleware) {
         list($name, $parameters) = array_pad(explode(':', $middleware, 2), 2, []);
 
         if (is_string($parameters)) {
@@ -258,8 +251,7 @@ class Kernel implements KernelContract
      * @param  string  $middleware
      * @return bool
      */
-    public function hasMiddleware($middleware)
-    {
+    public function hasMiddleware($middleware) {
         return in_array($middleware, $this->middleware);
     }
 
@@ -269,8 +261,7 @@ class Kernel implements KernelContract
      * @param  string  $middleware
      * @return $this
      */
-    public function prependMiddleware($middleware)
-    {
+    public function prependMiddleware($middleware) {
         if (array_search($middleware, $this->middleware) === false) {
             array_unshift($this->middleware, $middleware);
         }
@@ -284,8 +275,7 @@ class Kernel implements KernelContract
      * @param  string  $middleware
      * @return $this
      */
-    public function pushMiddleware($middleware)
-    {
+    public function pushMiddleware($middleware) {
         if (array_search($middleware, $this->middleware) === false) {
             $this->middleware[] = $middleware;
         }
@@ -295,11 +285,10 @@ class Kernel implements KernelContract
 
     /**
      * Get the bootstrap classes for the application.
-     *
+     * <br>获取应用的启动类
      * @return array
      */
-    protected function bootstrappers()
-    {
+    protected function bootstrappers() {
         return $this->bootstrappers;
     }
 
@@ -309,8 +298,7 @@ class Kernel implements KernelContract
      * @param  \Exception  $e
      * @return void
      */
-    protected function reportException(Exception $e)
-    {
+    protected function reportException(Exception $e) {
         $this->app[ExceptionHandler::class]->report($e);
     }
 
@@ -321,8 +309,7 @@ class Kernel implements KernelContract
      * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function renderException($request, Exception $e)
-    {
+    protected function renderException($request, Exception $e) {
         return $this->app[ExceptionHandler::class]->render($request, $e);
     }
 
@@ -331,8 +318,8 @@ class Kernel implements KernelContract
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
-    public function getApplication()
-    {
+    public function getApplication() {
         return $this->app;
     }
+
 }

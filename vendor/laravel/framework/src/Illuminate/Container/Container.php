@@ -588,8 +588,8 @@ class Container implements ArrayAccess, ContainerContract {
     /**
      * An alias function name for make().
      * <br>make方法的别名
-     * @param  string  $abstract
-     * @param  array  $parameters
+     * @param  string  $abstract 类别名，实际类名，接口类名
+     * @param  array  $parameters 类依赖的参数
      * @return mixed
      */
     public function makeWith($abstract, array $parameters = []) {

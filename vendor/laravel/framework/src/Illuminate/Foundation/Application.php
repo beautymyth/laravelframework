@@ -657,7 +657,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Load the provider for a deferred service.
-     * 加载延迟服务提供者
+     * <br>加载延迟服务提供者
      * @param  string  $service
      * @return void
      */
@@ -713,13 +713,12 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Resolve the given type from the container.
      * 从服务容器中解析服务
      * (Overriding Container::make)
-     *
-     * @param  string  $abstract
-     * @param  array  $parameters
+     * @param  string  $abstract 类别名，实际类名，接口类名
+     * @param  array  $parameters 类依赖的参数
      * @return mixed
      */
     public function make($abstract, array $parameters = []) {
-        //获取别名对应的可用类名
+        //获取抽象类型的别名
         $abstract = $this->getAlias($abstract);
 
         if (isset($this->deferredServices[$abstract]) && !isset($this->instances[$abstract])) {
@@ -761,7 +760,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         if ($this->booted) {
             return;
         }
-
+        
         // Once the application has booted we will also fire some "booted" callbacks
         // for any listeners that need to do work after this initial booting gets
         // finished. This is useful when ordering the boot-up processes we run.
