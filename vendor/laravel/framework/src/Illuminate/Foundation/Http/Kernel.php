@@ -89,13 +89,10 @@ class Kernel implements KernelContract {
     public function __construct(Application $app, Router $router) {
         $this->app = $app;
         $this->router = $router;
-
         $router->middlewarePriority = $this->middlewarePriority;
-
         foreach ($this->middlewareGroups as $key => $middleware) {
             $router->middlewareGroup($key, $middleware);
         }
-
         foreach ($this->routeMiddleware as $key => $middleware) {
             $router->aliasMiddleware($key, $middleware);
         }
@@ -114,18 +111,14 @@ class Kernel implements KernelContract {
             $response = $this->sendRequestThroughRouter($request);
         } catch (Exception $e) {
             $this->reportException($e);
-
             $response = $this->renderException($request, $e);
         } catch (Throwable $e) {
             $this->reportException($e = new FatalThrowableError($e));
-
             $response = $this->renderException($request, $e);
         }
-
         $this->app['events']->dispatch(
                 new Events\RequestHandled($request, $response)
         );
-
         return $response;
     }
 
@@ -136,13 +129,15 @@ class Kernel implements KernelContract {
      * @return \Illuminate\Http\Response
      */
     protected function sendRequestThroughRouter($request) {
+
         $this->app->instance('request', $request);
 
         Facade::clearResolvedInstance('request');
-        
+
         //为Http请求启动应用
         $this->bootstrap();
 
+        //创建处理管道
         return (new Pipeline($this->app))
                         ->send($request)
                         ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
@@ -164,13 +159,12 @@ class Kernel implements KernelContract {
 
     /**
      * Get the route dispatcher callback.
-     *
+     * <br>获取路由分发器闭包函数
      * @return \Closure
      */
     protected function dispatchToRouter() {
         return function ($request) {
             $this->app->instance('request', $request);
-
             return $this->router->dispatch($request);
         };
     }
@@ -184,7 +178,6 @@ class Kernel implements KernelContract {
      */
     public function terminate($request, $response) {
         $this->terminateMiddleware($request, $response);
-
         $this->app->terminate();
     }
 
@@ -199,16 +192,12 @@ class Kernel implements KernelContract {
         $middlewares = $this->app->shouldSkipMiddleware() ? [] : array_merge(
                         $this->gatherRouteMiddleware($request), $this->middleware
         );
-
         foreach ($middlewares as $middleware) {
             if (!is_string($middleware)) {
                 continue;
             }
-
             list($name) = $this->parseMiddleware($middleware);
-
             $instance = $this->app->make($name);
-
             if (method_exists($instance, 'terminate')) {
                 $instance->terminate($request, $response);
             }
@@ -225,7 +214,6 @@ class Kernel implements KernelContract {
         if ($route = $request->route()) {
             return $this->router->gatherRouteMiddleware($route);
         }
-
         return [];
     }
 
@@ -237,11 +225,9 @@ class Kernel implements KernelContract {
      */
     protected function parseMiddleware($middleware) {
         list($name, $parameters) = array_pad(explode(':', $middleware, 2), 2, []);
-
         if (is_string($parameters)) {
             $parameters = explode(',', $parameters);
         }
-
         return [$name, $parameters];
     }
 
@@ -265,7 +251,6 @@ class Kernel implements KernelContract {
         if (array_search($middleware, $this->middleware) === false) {
             array_unshift($this->middleware, $middleware);
         }
-
         return $this;
     }
 
@@ -279,7 +264,6 @@ class Kernel implements KernelContract {
         if (array_search($middleware, $this->middleware) === false) {
             $this->middleware[] = $middleware;
         }
-
         return $this;
     }
 
