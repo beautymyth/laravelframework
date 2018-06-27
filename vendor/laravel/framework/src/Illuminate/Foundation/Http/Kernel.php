@@ -16,21 +16,21 @@ class Kernel implements KernelContract {
 
     /**
      * The application implementation.
-     *
+     * <br>应用实例
      * @var \Illuminate\Contracts\Foundation\Application
      */
     protected $app;
 
     /**
      * The router instance.
-     *
+     *　路由实例
      * @var \Illuminate\Routing\Router
      */
     protected $router;
 
     /**
      * The bootstrap classes for the application.
-     *
+     * <br>应用需要启动的类
      * @var array
      */
     protected $bootstrappers = [
@@ -44,30 +44,31 @@ class Kernel implements KernelContract {
 
     /**
      * The application's middleware stack.
-     *
+     * <br>应用程序的全局HTTP中间件堆栈，每次请求都会执行这些中间件
      * @var array
      */
     protected $middleware = [];
 
     /**
      * The application's route middleware groups.
-     *
+     * <br>应用程序的路由中间件组
      * @var array
      */
     protected $middlewareGroups = [];
 
     /**
      * The application's route middleware.
-     *
+     * <br>应用程序的路由中间件
+     * <br>这些中间件可能分配给中间件组或单独使用
      * @var array
      */
     protected $routeMiddleware = [];
 
     /**
      * The priority-sorted list of middleware.
-     *
+     * <br>优先级排序的中间件列表
      * Forces the listed middleware to always be in the given order.
-     *
+     * <br>强制列出的中间件始终按照给定的顺序
      * @var array
      */
     protected $middlewarePriority = [
@@ -81,7 +82,7 @@ class Kernel implements KernelContract {
 
     /**
      * Create a new HTTP kernel instance.
-     *
+     * <br>创建内核实例
      * @param  \Illuminate\Contracts\Foundation\Application  $app
      * @param  \Illuminate\Routing\Router  $router
      * @return void
@@ -89,6 +90,7 @@ class Kernel implements KernelContract {
     public function __construct(Application $app, Router $router) {
         $this->app = $app;
         $this->router = $router;
+        //设置路由的中间件信息
         $router->middlewarePriority = $this->middlewarePriority;
         foreach ($this->middlewareGroups as $key => $middleware) {
             $router->middlewareGroup($key, $middleware);
@@ -159,7 +161,7 @@ class Kernel implements KernelContract {
 
     /**
      * Get the route dispatcher callback.
-     * <br>获取路由分发器闭包函数
+     * <br>获取路由分发处理的闭包函数
      * @return \Closure
      */
     protected function dispatchToRouter() {
@@ -171,7 +173,7 @@ class Kernel implements KernelContract {
 
     /**
      * Call the terminate method on any terminable middleware.
-     *
+     * <br>调用中间件的terminate方法与应用的terminate方法
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Http\Response  $response
      * @return void
@@ -183,7 +185,7 @@ class Kernel implements KernelContract {
 
     /**
      * Call the terminate method on any terminable middleware.
-     *
+     * <br>调用中间件的terminate方法
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Http\Response  $response
      * @return void
@@ -206,7 +208,7 @@ class Kernel implements KernelContract {
 
     /**
      * Gather the route middleware for the given request.
-     *
+     * <br>为给定的请求收集路由中间件
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -219,7 +221,7 @@ class Kernel implements KernelContract {
 
     /**
      * Parse a middleware string to get the name and parameters.
-     *
+     * <br>解析中间件字符串以获取名称和参数
      * @param  string  $middleware
      * @return array
      */
@@ -233,7 +235,7 @@ class Kernel implements KernelContract {
 
     /**
      * Determine if the kernel has a given middleware.
-     *
+     * <br>内核是否包含某个中间件
      * @param  string  $middleware
      * @return bool
      */
@@ -243,7 +245,7 @@ class Kernel implements KernelContract {
 
     /**
      * Add a new middleware to beginning of the stack if it does not already exist.
-     *
+     * <br>在全局中间件的堆栈前增加一个中间件
      * @param  string  $middleware
      * @return $this
      */
@@ -256,7 +258,7 @@ class Kernel implements KernelContract {
 
     /**
      * Add a new middleware to end of the stack if it does not already exist.
-     *
+     * <br>在全局中间件的堆栈后增加一个中间件
      * @param  string  $middleware
      * @return $this
      */
@@ -278,7 +280,7 @@ class Kernel implements KernelContract {
 
     /**
      * Report the exception to the exception handler.
-     *
+     * <br>将异常报告给异常处理程序
      * @param  \Exception  $e
      * @return void
      */
@@ -288,7 +290,7 @@ class Kernel implements KernelContract {
 
     /**
      * Render the exception to a response.
-     *
+     * <br>为响应呈现异常
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $e
      * @return \Symfony\Component\HttpFoundation\Response
@@ -299,7 +301,7 @@ class Kernel implements KernelContract {
 
     /**
      * Get the Laravel application instance.
-     *
+     * <br>获取应用实例
      * @return \Illuminate\Contracts\Foundation\Application
      */
     public function getApplication() {

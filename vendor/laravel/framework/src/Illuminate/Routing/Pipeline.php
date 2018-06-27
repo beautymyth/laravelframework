@@ -19,7 +19,7 @@ class Pipeline extends BasePipeline
 {
     /**
      * Get the final piece of the Closure onion.
-     *
+     * <br>获取闭包(洋葱)的最后一块
      * @param  \Closure  $destination
      * @return \Closure
      */
@@ -38,7 +38,7 @@ class Pipeline extends BasePipeline
 
     /**
      * Get a Closure that represents a slice of the application onion.
-     *
+     * <br>获取每个中间件的调用闭包
      * @return \Closure
      */
     protected function carry()
@@ -62,7 +62,7 @@ class Pipeline extends BasePipeline
 
     /**
      * Handle the given exception.
-     *
+     * <br>异常处理
      * @param  mixed  $passable
      * @param  \Exception  $e
      * @return mixed

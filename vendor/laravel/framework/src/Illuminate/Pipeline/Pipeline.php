@@ -85,7 +85,7 @@ class Pipeline implements PipelineContract {
 
     /**
      * Run the pipeline with a final destination callback.
-     * <br>运行管道的最终回调
+     * <br>拼接最终的回调函数(按中间件顺序执行)
      * @param  \Closure  $destination
      * @return mixed
      */
