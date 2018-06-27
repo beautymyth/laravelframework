@@ -1,42 +1,34 @@
 <?php
-
 namespace Illuminate\Pipeline;
-
 use Closure;
 use RuntimeException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
-
 class Pipeline implements PipelineContract {
-
     /**
      * The container implementation.
      * <br>应用实例
      * @var \Illuminate\Contracts\Container\Container
      */
     protected $container;
-
     /**
      * The object being passed through the pipeline.
      * <br>通过管道传递的对象
      * @var mixed
      */
     protected $passable;
-
     /**
      * The array of class pipes.
      * <br>管道数组
      * @var array
      */
     protected $pipes = [];
-
     /**
      * The method to call on each pipe.
      * <br>调用每个管道的方法
      * @var string
      */
     protected $method = 'handle';
-
     /**
      * Create a new class instance.
      * <br>创建一个新的管道实例
@@ -46,7 +38,6 @@ class Pipeline implements PipelineContract {
     public function __construct(Container $container = null) {
         $this->container = $container;
     }
-
     /**
      * Set the object being sent through the pipeline.
      * <br>设置通过管道发送的对象
@@ -55,10 +46,8 @@ class Pipeline implements PipelineContract {
      */
     public function send($passable) {
         $this->passable = $passable;
-
         return $this;
     }
-
     /**
      * Set the array of pipes.
      * <br>设置管道数组
@@ -67,22 +56,18 @@ class Pipeline implements PipelineContract {
      */
     public function through($pipes) {
         $this->pipes = is_array($pipes) ? $pipes : func_get_args();
-
         return $this;
     }
-
     /**
      * Set the method to call on the pipes.
-     *
+     * <br>设置调用中间件的方法
      * @param  string  $method
      * @return $this
      */
     public function via($method) {
         $this->method = $method;
-
         return $this;
     }
-
     /**
      * Run the pipeline with a final destination callback.
      * <br>拼接最终的回调函数(按中间件顺序执行)
@@ -97,7 +82,6 @@ class Pipeline implements PipelineContract {
         //运行嵌套的回调
         return $pipeline($this->passable);
     }
-
     /**
      * Get the final piece of the Closure onion.
      * <br>获取闭包(洋葱)的最后一块
@@ -109,7 +93,6 @@ class Pipeline implements PipelineContract {
             return $destination($passable);
         };
     }
-
     /**
      * Get a Closure that represents a slice of the application onion.
      * <br>获取每个中间件的调用闭包
@@ -130,7 +113,6 @@ class Pipeline implements PipelineContract {
                     return $pipe($passable, $stack);
                 } elseif (!is_object($pipe)) {
                     list($name, $parameters) = $this->parsePipeString($pipe);
-
                     // If the pipe is a string we will parse the string and resolve the class out
                     // of the dependency injection container. We can then build a callable and
                     // execute the pipe function giving in the parameters that are required.
@@ -153,26 +135,22 @@ class Pipeline implements PipelineContract {
             };
         };
     }
-
     /**
      * Parse full pipe string to get name and parameters.
-     *
+     * <br>解析中间件字符串以获取名称和参数
      * @param  string $pipe
      * @return array
      */
     protected function parsePipeString($pipe) {
         list($name, $parameters) = array_pad(explode(':', $pipe, 2), 2, []);
-
         if (is_string($parameters)) {
             $parameters = explode(',', $parameters);
         }
-
         return [$name, $parameters];
     }
-
     /**
      * Get the container instance.
-     *
+     * <br>获取容器实例
      * @return \Illuminate\Contracts\Container\Container
      * @throws \RuntimeException
      */
@@ -180,8 +158,6 @@ class Pipeline implements PipelineContract {
         if (!$this->container) {
             throw new RuntimeException('A container instance has not been passed to the Pipeline.');
         }
-
         return $this->container;
     }
-
 }
