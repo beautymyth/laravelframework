@@ -44,9 +44,9 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "web" routes for the application.
-     *
+     * <br>定义web路由
      * These routes all receive session state, CSRF protection, etc.
-     *
+     * <br>这些路由都接收会话状态、CSRF保护等
      * @return void
      */
     protected function mapWebRoutes()
@@ -58,9 +58,9 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Define the "api" routes for the application.
-     *
+     * <br>定义api路由
      * These routes are typically stateless.
-     *
+     * <br>这些路由通常是无状态的
      * @return void
      */
     protected function mapApiRoutes()
