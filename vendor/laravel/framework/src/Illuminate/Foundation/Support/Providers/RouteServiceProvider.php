@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Set the root controller namespace for the application.
-     *
+     * <br>设置控制器的命名空间
      * @return void
      */
     protected function setRootControllerNamespace()
@@ -53,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Load the cached routes for the application.
-     *
+     * <br>加载缓存的路由
      * @return void
      */
     protected function loadCachedRoutes()
@@ -65,7 +65,7 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * Load the application routes.
-     *
+     * <br>加载文件的路由
      * @return void
      */
     protected function loadRoutes()
