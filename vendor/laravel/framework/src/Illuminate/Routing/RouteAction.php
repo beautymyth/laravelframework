@@ -11,7 +11,7 @@ class RouteAction
 {
     /**
      * Parse the given action into an array.
-     *
+     * <br>将给定的操作解析为数组
      * @param  string  $uri
      * @param  mixed  $action
      * @return array
@@ -48,7 +48,7 @@ class RouteAction
 
     /**
      * Get an action for a route that has no action.
-     *
+     * <br>为没有操作的路由，设置会抛出异常的路由
      * @param  string  $uri
      * @return array
      */
@@ -61,7 +61,7 @@ class RouteAction
 
     /**
      * Find the callable in an action array.
-     *
+     * <br>从操作数组中，查找第一个闭包函数
      * @param  array  $action
      * @return callable
      */
@@ -74,7 +74,7 @@ class RouteAction
 
     /**
      * Make an action for an invokable controller.
-     *
+     * <br>为可调用控制器增加操作
      * @param  string $action
      * @return string
      */
