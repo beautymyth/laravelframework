@@ -143,7 +143,7 @@ class Pipeline implements PipelineContract {
                     $parameters = [$passable, $stack];
                 }
 
-                //调用中间件中的指定方法
+                //调用中间件中的指定方法或执行__invoke魔术方法
                 return method_exists($pipe, $this->method) ? $pipe->{$this->method}(...$parameters) : $pipe(...$parameters);
             };
         };
