@@ -85,7 +85,7 @@ class Router implements RegistrarContract, BindingRegistrar {
     /**
      * The priority-sorted list of middleware.
      * <br>优先级排序的中间件列表
-     * Forces the listed middleware to always be in the given order.
+     * <br>Forces the listed middleware to always be in the given order.
      * <br>强制列出的中间件始终按照给定的顺序
      * @var array
      */
@@ -340,7 +340,7 @@ class Router implements RegistrarContract, BindingRegistrar {
         // have created the routes, we will pop the attributes off the stack.
         //加载路由
         $this->loadRoutes($routes);
-        
+
         //属性出堆栈
         array_pop($this->groupStack);
     }
@@ -357,7 +357,7 @@ class Router implements RegistrarContract, BindingRegistrar {
             //主要用于路由的嵌套定义，如web路由中，再进行分组
             $attributes = RouteGroup::merge($attributes, end($this->groupStack));
         }
-        
+
         //属性进堆栈
         $this->groupStack[] = $attributes;
     }
@@ -436,7 +436,7 @@ class Router implements RegistrarContract, BindingRegistrar {
             //将action转换成['uses'=>'namespace\controller@method','controller'=>'namespace\controller@method']格式
             $action = $this->convertToControllerAction($action);
         }
-        
+
         //创建一个新路由实例
         $route = $this->newRoute(
                 $methods, $this->prefix($uri), $action
@@ -449,7 +449,7 @@ class Router implements RegistrarContract, BindingRegistrar {
             //如果有组堆栈，将action合并到group属性中
             $this->mergeGroupAttributesIntoRoute($route);
         }
-        
+
         //添加路由参数约束条件
         $this->addWhereClausesToRoute($route);
 
@@ -575,20 +575,20 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Dispatch the request to the application.
-     *
+     * <br>将请求发送到应用程序
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function dispatch(Request $request) {
-        var_dump(array_keys($this->routes->getRoutes()));
+        //设置当前请求
         $this->currentRequest = $request;
-
+        //向路由发送请求
         return $this->dispatchToRoute($request);
     }
 
     /**
      * Dispatch the request to a route and return the response.
-     *
+     * <br>将请求发送到路由并返回响应
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
@@ -598,13 +598,15 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Find the route matching a given request.
-     *
+     * <br>查找与给定请求匹配的路由
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Routing\Route
      */
     protected function findRoute($request) {
+        //获取匹配当前请求的路由
         $this->current = $route = $this->routes->match($request);
 
+        //更新容器的共享路由实例
         $this->container->instance(Route::class, $route);
 
         return $route;
@@ -612,35 +614,39 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Return the response for the given route.
-     *
+     * <br>返回给定路由的响应
      * @param  Route  $route
      * @param  Request  $request
      * @return mixed
      */
     protected function runRoute(Request $request, Route $route) {
+        //设置路由解析器回调
         $request->setRouteResolver(function () use ($route) {
             return $route;
         });
 
         $this->events->dispatch(new Events\RouteMatched($route, $request));
-
-        return $this->prepareResponse($request, $this->runRouteWithinStack($route, $request)
-        );
+        
+        //创建响应实例
+        return $this->prepareResponse($request, $this->runRouteWithinStack($route, $request));
     }
 
     /**
      * Run the given route within a Stack "onion" instance.
-     *
+     * <br>
      * @param  \Illuminate\Routing\Route  $route
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     protected function runRouteWithinStack(Route $route, Request $request) {
+        //是否需要跳过中间件
         $shouldSkipMiddleware = $this->container->bound('middleware.disable') &&
                 $this->container->make('middleware.disable') === true;
-
+        
+        //获取需要经过的中间件
         $middleware = $shouldSkipMiddleware ? [] : $this->gatherRouteMiddleware($route);
-
+        
+        //中间件处理请求，最后执行then里的方法
         return (new Pipeline($this->container))
                         ->send($request)
                         ->through($middleware)
@@ -653,7 +659,7 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Gather the middleware for the given route with resolved class names.
-     *
+     * <br>获取路由的中间件
      * @param  \Illuminate\Routing\Route  $route
      * @return array
      */
@@ -667,7 +673,7 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Sort the given middleware by priority.
-     *
+     * <br>将中间件进行优先级排序
      * @param  \Illuminate\Support\Collection  $middlewares
      * @return array
      */
@@ -677,7 +683,7 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Create a response instance from the given value.
-     *
+     * <br>创建响应实例
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @param  mixed  $response
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
@@ -688,7 +694,7 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Static version of prepareResponse.
-     *
+     * <br>创建响应实例
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @param  mixed  $response
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
@@ -1043,7 +1049,7 @@ class Router implements RegistrarContract, BindingRegistrar {
     public function currentRouteAction() {
         if ($this->current()) {
             //return $this->current()->getAction()['controller'] ?? null;
-            return $this->current()->getAction()['controller']!==null ? $this->current()->getAction()['controller'] : null;
+            return $this->current()->getAction()['controller'] !== null ? $this->current()->getAction()['controller'] : null;
         }
     }
 
@@ -1161,7 +1167,7 @@ class Router implements RegistrarContract, BindingRegistrar {
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $parameters);
         }
-        
+
         //生成路由注册实例
         if ($method == 'middleware') {
             return (new RouteRegistrar($this))->attribute($method, is_array($parameters[0]) ? $parameters[0] : $parameters);
