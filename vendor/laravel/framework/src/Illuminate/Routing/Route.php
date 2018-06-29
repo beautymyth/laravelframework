@@ -38,14 +38,14 @@ class Route {
 
     /**
      * The route action array.
-     *
+     * <br>路由操作数组
      * @var array
      */
     public $action;
 
     /**
      * Indicates whether the route is a fallback route.
-     *
+     * <br>是否为后备路由
      * @var bool
      */
     public $isFallback = false;
@@ -66,7 +66,7 @@ class Route {
 
     /**
      * The regular expression requirements.
-     *
+     * <br>路由参数的约束
      * @var array
      */
     public $wheres = [];
@@ -94,7 +94,7 @@ class Route {
 
     /**
      * The compiled version of the route.
-     *
+     * <br>编译后的路由
      * @var \Symfony\Component\Routing\CompiledRoute
      */
     public $compiled;
@@ -243,16 +243,20 @@ class Route {
 
     /**
      * Determine if the route matches given request.
-     *
+     * <br>路由是否匹配请求
      * @param  \Illuminate\Http\Request  $request
      * @param  bool  $includingMethod
      * @return bool
      */
     public function matches(Request $request, $includingMethod = true) {
+        //编译路由
         $this->compileRoute();
-
+        
+        //对路由使用路由验证器检验
+        //UriValidator,MethodValidator,SchemeValidator,HostValidator
         foreach ($this->getValidators() as $validator) {
             if (!$includingMethod && $validator instanceof MethodValidator) {
+                //跳过MethodValidator验证
                 continue;
             }
 
@@ -260,13 +264,14 @@ class Route {
                 return false;
             }
         }
-
+        
+        //验证通过
         return true;
     }
 
     /**
      * Compile the route into a Symfony CompiledRoute instance.
-     *
+     * <br>将路由编译为Symfony CompiledRoute实例
      * @return \Symfony\Component\Routing\CompiledRoute
      */
     protected function compileRoute() {
@@ -279,7 +284,7 @@ class Route {
 
     /**
      * Bind the route to a given request for execution.
-     *
+     * <br>将路由绑定到给定的执行请求
      * @param  \Illuminate\Http\Request  $request
      * @return $this
      */
@@ -709,9 +714,11 @@ class Route {
 
         $this->computedMiddleware = [];
 
-        return $this->computedMiddleware = array_unique(array_merge(
+         $this->computedMiddleware = array_unique(array_merge(
                         $this->middleware(), $this->controllerMiddleware()
                 ), SORT_REGULAR);
+        var_dump($this->computedMiddleware);
+        return $this->computedMiddleware;
     }
 
     /**
@@ -770,7 +777,7 @@ class Route {
 
     /**
      * Get the route validators for the instance.
-     *
+     * <br>获取路由验证器
      * @return array
      */
     public static function getValidators() {
