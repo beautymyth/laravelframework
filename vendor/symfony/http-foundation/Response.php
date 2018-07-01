@@ -247,7 +247,7 @@ class Response
 
     /**
      * Prepares the Response before it is sent to the client.
-     *
+     * <br>准备用于发送给客户端的响应
      * This method tweaks the Response to ensure that it is
      * compliant with RFC 2616. Most of the changes are based on
      * the Request that is "associated" with this Response.
@@ -313,7 +313,7 @@ class Response
 
     /**
      * Sends HTTP headers.
-     *
+     * <br>发送HTTP标头
      * @return $this
      */
     public function sendHeaders()
@@ -338,7 +338,7 @@ class Response
 
     /**
      * Sends content for the current web response.
-     *
+     * <br>发送当前web响应的内容
      * @return $this
      */
     public function sendContent()
@@ -350,7 +350,7 @@ class Response
 
     /**
      * Sends HTTP headers and content.
-     *
+     * <br>发送HTTP头和内容
      * @return $this
      */
     public function send()

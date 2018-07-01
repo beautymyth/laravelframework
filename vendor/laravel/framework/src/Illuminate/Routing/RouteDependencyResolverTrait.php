@@ -11,7 +11,7 @@ trait RouteDependencyResolverTrait
 {
     /**
      * Resolve the object method's type-hinted dependencies.
-     *
+     * <br>解析对象方法的依赖项
      * @param  array  $parameters
      * @param  object  $instance
      * @param  string  $method
@@ -22,7 +22,8 @@ trait RouteDependencyResolverTrait
         if (! method_exists($instance, $method)) {
             return $parameters;
         }
-
+        
+        //解析方法的依赖项
         return $this->resolveMethodDependencies(
             $parameters, new ReflectionMethod($instance, $method)
         );

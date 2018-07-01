@@ -29,7 +29,7 @@ class ControllerDispatcher implements ControllerDispatcherContract
 
     /**
      * Dispatch a request to a given controller and method.
-     *
+     * <br>向控制器中的方法发送请求
      * @param  \Illuminate\Routing\Route  $route
      * @param  mixed  $controller
      * @param  string  $method
@@ -37,14 +37,16 @@ class ControllerDispatcher implements ControllerDispatcherContract
      */
     public function dispatch(Route $route, $controller, $method)
     {
+        //解析控制器的参数依赖
         $parameters = $this->resolveClassMethodDependencies(
             $route->parametersWithoutNulls(), $controller, $method
         );
 
         if (method_exists($controller, 'callAction')) {
+            //如果控制器中有callAction，则执行callAction
             return $controller->callAction($method, $parameters);
         }
-
+        //直接调用方法
         return $controller->{$method}(...array_values($parameters));
     }
 

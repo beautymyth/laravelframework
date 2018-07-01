@@ -156,7 +156,7 @@ class Route {
 
     /**
      * Run the route action and return the response.
-     *
+     * <br>运行route操作并返回响应
      * @return mixed
      */
     public function run() {
@@ -175,7 +175,7 @@ class Route {
 
     /**
      * Checks whether the route's action is a controller.
-     *
+     * <br>检查路由的动作是否为控制器
      * @return bool
      */
     protected function isControllerAction() {
@@ -184,7 +184,7 @@ class Route {
 
     /**
      * Run the route action and return the response.
-     *
+     * <br>执行闭包方法
      * @return mixed
      */
     protected function runCallable() {
@@ -197,7 +197,7 @@ class Route {
 
     /**
      * Run the route action and return the response.
-     *
+     * <br>执行控制器的方法
      * @return mixed
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -210,7 +210,7 @@ class Route {
 
     /**
      * Get the controller instance for the route.
-     *
+     * <br>获取路由的控制器实例
      * @return mixed
      */
     public function getController() {
@@ -225,7 +225,7 @@ class Route {
 
     /**
      * Get the controller method used for the route.
-     *
+     * <br>获取用于路由的控制器方法
      * @return string
      */
     protected function getControllerMethod() {
@@ -764,7 +764,7 @@ class Route {
 
     /**
      * Get the dispatcher for the route's controller.
-     *
+     * <br>获取路由控制器的调度程序
      * @return \Illuminate\Routing\Contracts\ControllerDispatcher
      */
     public function controllerDispatcher() {
