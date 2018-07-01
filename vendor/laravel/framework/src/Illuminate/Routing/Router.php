@@ -785,7 +785,7 @@ class Router implements RegistrarContract, BindingRegistrar {
 
     /**
      * Register a short-hand name for a middleware.
-     *
+     * <br>为中间件注册一个简短的名称
      * @param  string  $name
      * @param  string  $class
      * @return $this
